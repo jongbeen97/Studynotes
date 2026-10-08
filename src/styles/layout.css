@@ -1,0 +1,171 @@
+/* 앱 틀: 제목 링크, 화면 탭, 대시보드 배치 */
+.top h1 .home {
+  color: inherit;
+  text-decoration: none;
+}
+.top .btn[aria-current='page'] {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+  margin-top: -6px;
+}
+.tabs a,
+.tabs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-2);
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.tabs a:hover {
+  color: var(--ink);
+}
+.tabs [aria-current='page'] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+.tabs .mono {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+/* 대시보드: 왼쪽 달력, 오른쪽 최근 글·복습 */
+.dash-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .dash-top {
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  }
+}
+.dash-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.panel-head .more {
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.panel-head .more:hover {
+  text-decoration: underline;
+}
+
+/* 최근 등록한 글 */
+.recent {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.recent li + li {
+  border-top: 1px solid var(--rule);
+}
+.recent a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 6px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 4px;
+  min-width: 0;
+}
+.recent a:hover {
+  background: var(--accent-soft);
+}
+.recent .t {
+  font-weight: 500;
+  font-size: 14.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recent .m {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.write-sheet {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 머리글 오른쪽 내 정보 사진 */
+.top {
+  align-items: center;
+}
+.me {
+  display: inline-flex;
+  border-radius: 50%;
+}
+.me[aria-current='page'] .avatar {
+  box-shadow: 0 0 0 2px var(--sheet), 0 0 0 4px var(--accent);
+}
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--rule);
+  font-weight: 700;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-sm {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+.avatar-lg {
+  width: 112px;
+  height: 112px;
+  font-size: 40px;
+}
+
+/* 분야별 기록 막대 */
+.bar {
+  display: inline-block;
+  width: 64px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}

@@ -1,0 +1,319 @@
+/* 대시보드 패널: 과정 자, 복습, 출석, 개념 지도 */
+/* course ruler */
+.ruler-box {
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px 18px 10px;
+}
+.ruler-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  align-items: baseline;
+}
+.ruler-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-size: 14px;
+}
+.ruler-stats b {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ruler {
+  position: relative;
+  height: 58px;
+  margin: 8px 4px 0;
+}
+.ruler .track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 26px;
+  height: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--paper);
+}
+.ruler .fill {
+  position: absolute;
+  left: 0;
+  top: 26px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 2px 0 0 2px;
+}
+.ruler .tick {
+  position: absolute;
+  top: 22px;
+  width: 1px;
+  height: 16px;
+  background: var(--ink-2);
+  opacity: 0.5;
+}
+.ruler .tlabel {
+  position: absolute;
+  top: 40px;
+  font-size: 11px;
+  color: var(--ink-2);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+.ruler .tlabel.edge-l {
+  transform: none;
+}
+.ruler .tlabel.edge-r {
+  transform: translateX(-100%);
+}
+/* 표시선(mline)은 날짜 위치에 정확히 서고, 글자(mlabel)만 좌우로 비켜 선다 */
+.ruler .mline {
+  position: absolute;
+  top: 18px;
+  width: 2px;
+  height: 20px;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+.ruler .mlabel {
+  position: absolute;
+  top: 0;
+  font-size: 11.5px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.ruler .mlabel.center {
+  transform: translateX(-50%);
+}
+.ruler .mlabel.start {
+  transform: translateX(4px);
+}
+.ruler .mlabel.end {
+  transform: translateX(calc(-100% - 4px));
+}
+.ruler .today {
+  color: var(--accent);
+}
+.ruler .event {
+  color: var(--ink-2);
+}
+/* 좁은 화면에서는 양 끝 날짜와 겹치는 월 이름을 숨긴다 */
+@media (max-width: 600px) {
+  .ruler .near-edge {
+    display: none;
+  }
+}
+
+/* dashboard */
+.dash {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+}
+.panel {
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 14px 16px 16px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.panel-head h2 {
+  font-size: 15px;
+  font-weight: 600;
+}
+.panel-head .count {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.queue {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.queue li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+.due {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+.due.d7 {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.linkish:hover {
+  text-decoration: underline;
+}
+.linkish small {
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  margin-left: 6px;
+}
+
+.attend {
+  display: grid;
+  grid-template-columns: 22px repeat(8, 1fr);
+  gap: 4px;
+  align-items: center;
+  max-width: 300px;
+}
+.attend .wd {
+  font-size: 11px;
+  color: var(--ink-2);
+  text-align: center;
+}
+.attend .mlabel {
+  font-size: 10.5px;
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  height: 14px;
+}
+.cell {
+  aspect-ratio: 1;
+  max-width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+}
+.cell.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.cell.today {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+.cell.future {
+  opacity: 0.35;
+}
+.cell.off {
+  visibility: hidden;
+}
+.legend {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--ink-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.legend i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  vertical-align: -1px;
+  margin-right: 5px;
+}
+.legend i.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.cover {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.cover button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 3px 6px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13.5px;
+}
+.cover button:hover {
+  border-color: var(--rule);
+}
+.cover button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.cover button.zero {
+  color: var(--ink-2);
+}
+.cover-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.cover-count em {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-2);
+  min-width: 14px;
+  text-align: right;
+}
+
+.squares {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+.squares span {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  border: 1px solid var(--rule);
+}
+.squares-md span {
+  width: 12px;
+  height: 12px;
+}
+.squares span.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+

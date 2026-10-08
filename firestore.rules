@@ -1,0 +1,59 @@
+rules_version = '2';
+
+// 데이터 보호 규칙
+// - 로그인한 사람은 자기 폴더(users/{자기 uid}/entries)만 읽고 쓸 수 있다.
+// - 다른 사람의 기록은 읽을 수도, 고칠 수도 없다.
+// - "나만 쓰도록" 내 이메일로 잠그는 방법은 README의 5단계를 보세요.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/entries/{entryId} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && request.resource.data.title is string
+                            && request.resource.data.title.size() <= 200
+                            && request.resource.data.date is string;
+    }
+
+    // 대시보드 달력의 일정
+    match /users/{uid}/schedules/{scheduleId} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && request.resource.data.title is string
+                            && request.resource.data.title.size() <= 100
+                            && request.resource.data.date is string
+                            && request.resource.data.done is bool;
+    }
+
+    // 공지사항
+    match /users/{uid}/notices/{noticeId} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && request.resource.data.title is string
+                            && request.resource.data.title.size() <= 200
+                            && request.resource.data.content is string
+                            && request.resource.data.pinned is bool;
+    }
+
+    // 내 정보 (프로필 사진·수강 이력·학력). 비밀번호는 여기에 저장하지 않는다.
+    match /users/{uid}/meta/profile {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && (!('photo' in request.resource.data) || (request.resource.data.photo is string
+                                                                         && request.resource.data.photo.size() <= 300000))
+                            && (!('courses' in request.resource.data) || (request.resource.data.courses is list
+                                                                           && request.resource.data.courses.size() <= 50))
+                            && (!('education' in request.resource.data) || (request.resource.data.education is list
+                                                                             && request.resource.data.education.size() <= 50))
+                            && !('password' in request.resource.data);
+    }
+
+    // 위에 해당하지 않는 경로는 전부 막는다.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

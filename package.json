@@ -1,0 +1,27 @@
+{
+  "name": "sesac-log",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "개발일지 — 하루 한 장 개발 기록, 일정 달력, D+1·D+7 복습, 개념 지도 채우기",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "deploy": "npm run build && firebase deploy --only hosting,firestore:rules"
+  },
+  "dependencies": {
+    "firebase": "^12.19.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0",
+    "vite-plugin-pwa": "^1.3.0"
+  }
+}
